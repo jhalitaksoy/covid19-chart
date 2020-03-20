@@ -112,7 +112,7 @@ class Index extends Component {
     //  cardList.push(<Card><CardTitle title="Turkey"></CardTitle><Chart data={this.state.turkeyTimeSeries["Türkiye"]} /></Card>)
     //}
 
-    if(this.state.total != undefined){
+    if (this.state.total != undefined) {
       cardList.push(<Card><CardTitle title="Total"></CardTitle><Chart data={this.state.total} /></Card>)
     }
 
@@ -140,10 +140,14 @@ class Index extends Component {
         </Head>
         <Header />
         <List>
-          {}
+          {cardList}
         </List>
-        <style jsx global>
-          {globalStyles}
+        <style jsx global>{`
+          body {
+            margin: 0;
+            padding: 0;
+          }
+        `}
         </style>
       </div>);
   }
