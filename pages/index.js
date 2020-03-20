@@ -4,7 +4,6 @@ import Card from "./components/Card"
 import CardTitle from "./components/CardTitle"
 import List from "./components/List"
 import Header from "./components/Header"
-import globalStyles from './styles/global.js'
 import Head from 'next/head'
 
 class Index extends Component {
