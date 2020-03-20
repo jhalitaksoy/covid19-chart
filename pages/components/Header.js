@@ -5,14 +5,15 @@ import { faCoffee, faSearch } from '@fortawesome/free-solid-svg-icons'
 class Header extends Component {
     constructor(props) {
         super(props);
-        this.state = {}
+        this.state = {searchActive : false}
+        this.onSearchButtonClick = this.onSearchButtonClick.bind(this);
     }
     render() {
         return (<div className="container">
 
             <div className="header">
                 <h2>Covid19 Charts</h2>
-                <div className="searchButton">
+                <div className="searchButton" onClick={this.onSearchButtonClick}>
                     <FontAwesomeIcon icon={faSearch} />
                 </div>
             </div>
@@ -53,6 +54,14 @@ class Header extends Component {
                 }
             `}</style>
         </div>);
+    }
+
+    onSearchButtonClick(){
+        let value = !this.state.searchActive
+        this.setState({
+            searchActive : value,
+        })
+        this.props.onSearchClick(!this.state.searchActive);
     }
 }
 

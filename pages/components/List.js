@@ -20,6 +20,7 @@ class List extends Component {
                     max-width : 900px;
                     margin:auto;
                     margin-top :10px;
+                    margin-bottom : 30px;
                 }
 
                 @media (max-width: 900px){
