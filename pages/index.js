@@ -64,16 +64,19 @@ class Index extends Component {
   render() {
     let cardList = []
 
-    //if (this.isTurkeyLoaded()) {
-    //  cardList.push(<Card><CardTitle title="Turkey"></CardTitle><Chart data={this.state.turkeyTimeSeries["Türkiye"]} /></Card>)
-    //}
-
     if (this.state.showSearchResult) {
-      if (this.state.searchResult == undefined || this.state.searchResult.lenght == 0) {
-        cardList = this.createInfoPanel("Not Found!")
+      if (this.state.showForme) {
+        if (this.isTurkeyLoaded()) {
+          cardList.push(this.createCard("Turkey", this.state.turkeyTimeSeries["Turkey"]))
+        }
       } else {
-        cardList = this.createCards(this.state.searchResult)
+        if (this.state.searchResult == undefined || this.state.searchResult.lenght == 0) {
+          cardList = this.createInfoPanel("Not Found!")
+        } else {
+          cardList = this.createCards(this.state.searchResult)
+        }
       }
+
     } else {
       if (this.state.total != undefined) {
         cardList.push(this.createCard("Total", this.state.total))
@@ -96,7 +99,7 @@ class Index extends Component {
     }
 
     let bottomText = "Touch for Info"
-    if(!isMobile){
+    if (!isMobile) {
       bottomText = "Click for Info"
     }
 
@@ -199,9 +202,18 @@ class Index extends Component {
     if (event.target.value.trim() === "") {
       this.setState({
         showSearchResult: false,
+        showForme: false,
         searchResult: undefined,
       })
-    } else {
+    }
+    else if (event.target.value.trim() == "@forme") {
+      this.setState({
+        showSearchResult: true,
+        showForme: true,
+        searchResult: undefined,
+      })
+    }
+    else {
       let i = 0
       this.state.sorted.forEach(element => {
         if (i < 5) {
@@ -220,6 +232,7 @@ class Index extends Component {
       });
       this.setState({
         showSearchResult: true,
+        showForme: false,
         searchResult: countryList,
       })
     }
