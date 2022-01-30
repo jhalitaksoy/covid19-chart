@@ -11,7 +11,6 @@ class Index extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      turkeyLoaded: false,
       timeseriesLoaded: false,
       searchActive: false,
       searchResult: [],
@@ -24,19 +23,8 @@ class Index extends Component {
   }
 
   componentDidMount() {
-
-    const url = "https://jhalitaksoy.github.io/covid19data/turkey-time-series.json";
-
-    fetch(url)
-      .then(response => response.json())
-      .then(data => {
-        this.setState(
-          { turkeyTimeSeries: data, turkeyLoaded: true }
-        )
-      })
-
     const countriesUrl = "https://pomber.github.io/covid19/countries.json";
-
+    const timeSeriesUrl = "https://pomber.github.io/covid19/timeseries.json";
     fetch(countriesUrl)
       .then(response => response.json())
       .then(data => {
@@ -48,8 +36,7 @@ class Index extends Component {
           total: this.total()
         })
       })
-
-    fetch("https://pomber.github.io/covid19/timeseries.json")
+    fetch(timeSeriesUrl)
       .then(response => response.json())
       .then(data => {
         this.setState(
@@ -65,18 +52,11 @@ class Index extends Component {
     let cardList = []
 
     if (this.state.showSearchResult) {
-      if (this.state.showForme) {
-        if (this.isTurkeyLoaded()) {
-          cardList.push(this.createCard("Turkey", this.state.turkeyTimeSeries["Turkey"]))
-        }
+      if (this.state.searchResult == undefined || this.state.searchResult.lenght == 0) {
+        cardList = this.createInfoPanel("Not Found!")
       } else {
-        if (this.state.searchResult == undefined || this.state.searchResult.lenght == 0) {
-          cardList = this.createInfoPanel("Not Found!")
-        } else {
-          cardList = this.createCards(this.state.searchResult)
-        }
+        cardList = this.createCards(this.state.searchResult)
       }
-
     } else {
       if (this.state.total != undefined) {
         cardList.push(this.createCard("Total", this.state.total))
@@ -85,12 +65,10 @@ class Index extends Component {
       let list = this.getCountries()
       if (list != undefined) {
         cardList.push(this.createCards(list))
-
       } else {
         cardList = this.createInfoPanel("Loading...")
       }
     }
-    console.log(this.state.searchActive)
     let searchBar = {}
     if (this.state.searchActive) {
       searchBar = this.createSearchBar()
@@ -202,14 +180,6 @@ class Index extends Component {
     if (event.target.value.trim() === "") {
       this.setState({
         showSearchResult: false,
-        showForme: false,
-        searchResult: undefined,
-      })
-    }
-    else if (event.target.value.trim() == "@forme") {
-      this.setState({
-        showSearchResult: true,
-        showForme: true,
         searchResult: undefined,
       })
     }
@@ -232,7 +202,6 @@ class Index extends Component {
       });
       this.setState({
         showSearchResult: true,
-        showForme: false,
         searchResult: countryList,
       })
     }
@@ -288,10 +257,6 @@ class Index extends Component {
         <Chart data={data} />
       </Card>
     )
-  }
-
-  isTurkeyLoaded() {
-    return this.state.turkeyLoaded && this.state.turkeyTimeSeries != undefined
   }
 
   isTimeSeriesLoaded() {
@@ -354,52 +319,3 @@ class Index extends Component {
 }
 
 export default Index;
-
-
-/*let turkey = {}
-    if (this.state.turkeyTimeSeries != undefined) {
-      turkey = this.state.turkeyTimeSeries["Türkiye"]
-    }
-
-    let china = {}
-    let italy = {}
-    let iran = [];
-    let spain = []
-    let combine = []
-
-    if (this.state.timeseries != undefined) {
-      china = this.state.timeseries["China"]
-      italy = this.state.timeseries["Italy"]
-      iran = this.state.timeseries["Iran"]
-      spain = this.state.timeseries["Spain"]
-
-      let i = 0
-      china.forEach(element => {
-        combine.push({
-          date: element.date,
-          china: element.confirmed,
-          italy: italy[i].confirmed,
-          iran: iran[i].confirmed,
-          spain: spain[i].confirmed,
-          turkey: 0,
-        })
-        i++;
-      });
-    }
-
-    if (turkeyLoaded) {
-      let i = 0
-      for (i in combine) {
-
-        if (combine[i].date == turkey[0].date) {
-          break;
-        }
-        i++;
-      }
-      turkey.forEach(element => {
-        if (i < combine.length) {
-          combine[i].turkey = element.confirmed
-          i++;
-        }
-      });
-    }*/
