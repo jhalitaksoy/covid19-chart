@@ -6,27 +6,34 @@ import List from "./components/List"
 import Header from "./components/Header"
 import Head from 'next/head'
 import { isMobile } from 'react-device-detect';
+import { loadCountries, loadTimeSeries } from '../service/service';
 
 class Index extends Component {
   constructor(props) {
     super(props);
-    this.state = {
-      timeseriesLoaded: false,
-      searchActive: false,
-      searchResult: [],
-      showSearchResult: false,
-    }
+    this.initialize();
+  }
+
+  initialize(){
+    this.state = this.createState()
     this.componentDidMount = this.componentDidMount.bind(this)
     this.sort = this.sort.bind(this)
     this.onSearchClick = this.onSearchClick.bind(this)
     this.onSearchChange = this.onSearchChange.bind(this)
   }
 
+  createState(){
+    return {
+      turkeyLoaded: false,
+      timeseriesLoaded: false,
+      searchActive: false,
+      searchResult: [],
+      showSearchResult: false,
+    }
+  }
+
   componentDidMount() {
-    const countriesUrl = "https://pomber.github.io/covid19/countries.json";
-    const timeSeriesUrl = "https://pomber.github.io/covid19/timeseries.json";
-    fetch(countriesUrl)
-      .then(response => response.json())
+    loadCountries()
       .then(data => {
         this.setState(
           { countries: data, countriesLoaded: true }
@@ -36,8 +43,7 @@ class Index extends Component {
           total: this.total()
         })
       })
-    fetch(timeSeriesUrl)
-      .then(response => response.json())
+    loadTimeSeries()
       .then(data => {
         this.setState(
           { timeseries: data, timeseriesLoaded: true }
@@ -48,6 +54,7 @@ class Index extends Component {
         })
       })
   }
+
   render() {
     let cardList = []
 
