@@ -15,7 +15,7 @@
     "@fortawesome/fontawesome-svg-core": "^1.2.27",
     "@fortawesome/free-solid-svg-icons": "^5.12.1",
     "@fortawesome/react-fontawesome": "^0.1.9",
-    "next": "^9.3.2",
+    "next": "^13.0.2",
     "react": "^16.13.0",
     "react-device-detect": "^1.11.14",
     "react-dom": "^16.13.0",
